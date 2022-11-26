@@ -60,15 +60,15 @@ let bothPlayersSelection = () => {
   computerSelection = computerPlay();
 };
 
-function game() {
-  for (let i = 1; i <= 5; i++) {
-    console.log("Round " + i);
-    bothPlayersSelection();
-    console.log(playRound(playerSelection, computerSelection));
-    console.log("Player: ", playerCount);
-    console.log("Computer : ", computerCount);
-  }
-}
+// function game() {
+//   for (let i = 1; i <= 5; i++) {
+//     console.log("Round " + i);
+//     bothPlayersSelection();
+//     console.log(playRound(playerSelection, computerSelection));
+//     console.log("Player: ", playerCount);
+//     console.log("Computer : ", computerCount);
+//   }
+// }
 
 game();
 console.log("Player: ", playerCount);

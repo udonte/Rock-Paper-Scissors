@@ -1,0 +1,36 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#container{
+  margin-top: 20px;
+  border: 1px solid grey;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+}
+
+#container #selection-box{
+  display: flex;
+  gap: 30px;
+}
+
+#selection-box button{
+  padding: 5px 20px;
+  cursor: pointer;
+  border-radius: 10px;
+  border: none;
+}
+
+#selection-box button:hover {
+  background-color: #21991182;
+}
