@@ -1,75 +1,92 @@
-let playerCount = 0;
-let computerCount = 0;
-function computerPlay() {
-  if (Math.floor(Math.random() * 3) + 1 === 1) {
-    return "rock";
-  } else if (Math.floor(Math.random() * 3) + 1 === 2) {
-    return "paper";
-  } else {
-    return "scissors";
-  }
+//caching the dom elements
+let userScore = 0;
+let compScore = 0;
+const scoreboardDiv = document.querySelector('.score');
+let userscoreSpan = document.querySelector('#user-score');
+const compscoreSpan = document.querySelector('#computer-score');
+let resultP = document.querySelector('.result > p');
+const rockDiv = document.getElementById('r');
+const paperDiv = document.getElementById('p');
+const scissorsDiv = document.getElementById('s');
+
+//getting the computer choice
+function getComputerChoice() {
+  const choices = ['r', 'p', 's'];
+  const randomNumber = Math.floor(Math.random() * 3);
+  return choices[randomNumber];
 }
-function playRound(playerSelection, computerSelection) {
-  if (playerSelection === "rock") {
-    if (computerSelection === "scissors") {
-      playerCount++;
-      computerCount;
-      return `Win! Rock beats Scissors. Computer played ${computerSelection}`;
-    } else if (computerSelection === "paper") {
-      playerCount;
-      computerCount++;
-      return `You Lose! Paper beats Rocks. Computer played ${computerSelection}`;
-    } else {
-      playerCount;
-      computerCount;
-      return "Tie! Computer played the same thing.";
-    }
-  } else if (playerSelection === "paper") {
-    if (computerSelection === "rock") {
-      playerCount++;
-      computerCount;
-      return `You Win! Paper beats Rock. Computer played ${computerSelection}`;
-    } else if (computerSelection === "Scissor") {
-      playerCount;
-      computerCount++;
-      return `You Lose! Scissors beats Paper. Computer played ${computerSelection}`;
-    } else {
-      playerCount;
-      computerCount;
-      return "Tie Computer played the same thing.";
-    }
-  } else {
-    if (computerSelection === "rock") {
-      playerCount;
-      computerCount++;
-      return `You Lose! Rock beats Scissors. Computer played ${computerSelection}`;
-    } else if (computerSelection === "paper") {
-      playerCount++;
-      computerCount;
-      return `You Win! Scissors beats Paper. Computer played ${computerSelection}`;
-    } else {
-      playerCount;
-      computerCount;
-      return "Tie! Computer played the same thing.";
-    }
-  }
+//convert the choice letters to choice words
+function convertToWord(letter) {
+  if (letter === "r") return "Rock";
+  if (letter === "p") return "Paper";
+  return "Scissors";
 }
 
-let bothPlayersSelection = () => {
-  playerSelection = prompt("Rock, Paper or Scissors?").toLowerCase();
-  computerSelection = computerPlay();
-};
+//win function
+function win(userChoice, computerChoice) {
+  userScore++;
+  userscoreSpan.innerHTML = userScore;
+  compscoreSpan.innerHTML = compScore;
+  const userChoiceDiv = document.getElementById(userChoice);
+  resultP.innerHTML = `${convertToWord(userChoice)} beats ${convertToWord(computerChoice)}. You win!`
+  userChoiceDiv.classList.add('green-glow');
+  setTimeout(() => userChoiceDiv.classList.remove('green-glow'), 300)
+}
 
-// function game() {
-//   for (let i = 1; i <= 5; i++) {
-//     console.log("Round " + i);
-//     bothPlayersSelection();
-//     console.log(playRound(playerSelection, computerSelection));
-//     console.log("Player: ", playerCount);
-//     console.log("Computer : ", computerCount);
-//   }
-// }
+//lose function
+function lose(userChoice, computerChoice) {
+  compScore++;
+  userscoreSpan.innerHTML = userScore;
+  compscoreSpan.innerHTML = compScore;
+  const userChoiceDiv = document.getElementById(userChoice);
+  resultP.innerHTML = `${convertToWord(computerChoice)} beats ${convertToWord(userChoice)}. You lose!`
+  userChoiceDiv.classList.add('red-glow');
+  setTimeout(()=> userChoiceDiv.classList.remove('red-glow'), 300)
+}
+//draw function
+function draw(userChoice, computerChoice) {
+  const userChoiceDiv = document.getElementById(userChoice);
+  resultP.innerHTML = `${convertToWord(computerChoice)} equals ${convertToWord(userChoice)}. Draw!`
+  userChoiceDiv.classList.add('gray-glow');
+  setTimeout(() => userChoiceDiv.classList.remove('gray-glow'), 300)
+}
+  
 
-game();
-console.log("Player: ", playerCount);
-console.log("Computer : ", computerCount);
+
+//plays the game with the user and computer choices
+function game(userChoice) {
+  const computerChoice = getComputerChoice();
+  switch (userChoice + computerChoice) {
+    case "rs":
+    case "sp":
+    case "pr":
+      win(userChoice, computerChoice);
+      break;
+    case "rp":
+    case "sr":
+    case "ps":
+      lose(userChoice, computerChoice);
+      break;
+    case "rr":
+    case "ss":
+    case "pp":
+      draw(userChoice, computerChoice);
+      break;
+  }
+}
+//getting the user choice
+function main() {
+  rockDiv.addEventListener('click', () => {
+    game('r')
+  });
+
+  paperDiv.addEventListener('click', () => {
+    game('p')
+  });
+  scissorsDiv.addEventListener('click', () => {
+    game('s')
+  });
+}
+
+main();
+
