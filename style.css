@@ -59,8 +59,12 @@ header > h1{
 .choices{
   display: flex;
   justify-content: center;
+  align-items: center;
   margin-top: 20px;
   gap: 5%;
+  background-color: antiquewhite;
+  padding: 5px;
+  width: 100%;
 }
 
 .choice{
@@ -72,7 +76,8 @@ header > h1{
 }
 .choice:hover {
   cursor: pointer;
-  background-color: #16171a;
+  border: 1px solid #16171a;
+  box-shadow: 3px 3px 2px tomato;
 }
 
 .choice img{

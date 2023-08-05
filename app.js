@@ -1,92 +1,89 @@
-//caching the dom elements
-let userScore = 0;
-let compScore = 0;
-const scoreboardDiv = document.querySelector('.score');
-let userscoreSpan = document.querySelector('#user-score');
-const compscoreSpan = document.querySelector('#computer-score');
-let resultP = document.querySelector('.result > p');
-const rockDiv = document.getElementById('r');
-const paperDiv = document.getElementById('p');
-const scissorsDiv = document.getElementById('s');
+let playerScore = 0;
+let computerScore = 0;
+let computerScoreDiv = document.getElementById('computer-score');
+let playerScoreDiv = document.getElementById('user-score');
+let resultBoxDiv = document.querySelector('.result-box');
 
-//getting the computer choice
-function getComputerChoice() {
-  const choices = ['r', 'p', 's'];
-  const randomNumber = Math.floor(Math.random() * 3);
-  return choices[randomNumber];
-}
-//convert the choice letters to choice words
-function convertToWord(letter) {
-  if (letter === "r") return "Rock";
-  if (letter === "p") return "Paper";
-  return "Scissors";
-}
+const playerChoiceButtons = document.querySelectorAll('.choice');
 
-//win function
-function win(userChoice, computerChoice) {
-  userScore++;
-  userscoreSpan.innerHTML = userScore;
-  compscoreSpan.innerHTML = compScore;
-  const userChoiceDiv = document.getElementById(userChoice);
-  resultP.innerHTML = `${convertToWord(userChoice)} beats ${convertToWord(computerChoice)}. You win!`
-  userChoiceDiv.classList.add('green-glow');
-  setTimeout(() => userChoiceDiv.classList.remove('green-glow'), 300)
+playerChoiceButtons.forEach((playerChoiceButton) => {
+	playerChoiceButton.addEventListener('click', () => {
+		playerSelection = playerChoiceButton.id;
+		computerSelection = getComputerChoice();
+		playRound(playerSelection, computerSelection);
+	})
+})
+
+
+//get computer choice
+function getComputerChoice(){
+	let randomNumber = Math.floor(Math.random() * 3) + 1;
+	const choice = randomNumber === 1 ? 'rock' :
+	(randomNumber === 2) ? 'paper' :
+	'scissors';
+	return choice;
 }
 
-//lose function
-function lose(userChoice, computerChoice) {
-  compScore++;
-  userscoreSpan.innerHTML = userScore;
-  compscoreSpan.innerHTML = compScore;
-  const userChoiceDiv = document.getElementById(userChoice);
-  resultP.innerHTML = `${convertToWord(computerChoice)} beats ${convertToWord(userChoice)}. You lose!`
-  userChoiceDiv.classList.add('red-glow');
-  setTimeout(()=> userChoiceDiv.classList.remove('red-glow'), 300)
-}
-//draw function
-function draw(userChoice, computerChoice) {
-  const userChoiceDiv = document.getElementById(userChoice);
-  resultP.innerHTML = `${convertToWord(computerChoice)} equals ${convertToWord(userChoice)}. Draw!`
-  userChoiceDiv.classList.add('gray-glow');
-  setTimeout(() => userChoiceDiv.classList.remove('gray-glow'), 300)
-}
-  
+//play round
+function playRound(playerSelection, computerSelection){
+	if(playerSelection === computerSelection){
+		computerScoreDiv.textContent = computerScore;
+playerScoreDiv.textContent = playerScore;
 
+		resultBoxDiv.textContent = 'tie'
+	}
+	else if
+	(playerSelection === 'rock' && computerSelection === 'scissors' ||
+	playerSelection === 'paper' && computerSelection === 'rock' ||
+	playerSelection === 'scissors' &&  computerSelection === 'paper'
+	){
+		playerScore++;
+		computerScoreDiv.textContent = computerScore;
+		playerScoreDiv.textContent = playerScore;
 
-//plays the game with the user and computer choices
-function game(userChoice) {
-  const computerChoice = getComputerChoice();
-  switch (userChoice + computerChoice) {
-    case "rs":
-    case "sp":
-    case "pr":
-      win(userChoice, computerChoice);
-      break;
-    case "rp":
-    case "sr":
-    case "ps":
-      lose(userChoice, computerChoice);
-      break;
-    case "rr":
-    case "ss":
-    case "pp":
-      draw(userChoice, computerChoice);
-      break;
-  }
-}
-//getting the user choice
-function main() {
-  rockDiv.addEventListener('click', () => {
-    game('r')
-  });
+		resultBoxDiv.textContent = `You win! ${playerSelection} beat ${computerSelection}`;
+	}
+	else {
+		computerScore++;
+		computerScoreDiv.textContent = computerScore;
+		playerScoreDiv.textContent = playerScore;
 
-  paperDiv.addEventListener('click', () => {
-    game('p')
-  });
-  scissorsDiv.addEventListener('click', () => {
-    game('s')
-  });
+		resultBoxDiv.textContent = `You lose! ${computerSelection} beat ${playerSelection}`;
+	}
+
+	checkWinner();
+		
 }
 
-main();
+function checkWinner(){
+	if(playerScore === 5){
+		resultBoxDiv.textContent = 'Wow. You won the Game';
+		setTimeout(refreshPage, 3000);
+	}
+	else if(computerScore === 5){
+		resultBoxDiv.textContent = 'Sorry! You lost the game!';
+		setTimeout(refreshPage, 3000);
+	}
+}
 
+function refreshPage(){
+	location.reload();
+}
+
+// function game(){
+// 	for(let i = 0; i < 5; i++){
+// 		playerSelection = prompt('choice');
+// 		computerSelection = getComputerChoice();
+// 		console.log(playRound(playerSelection, computerSelection));
+// 	}
+
+// 	if(playerScore > computerScore){
+// 		return 'You won the game'
+// 	}
+// 	else{
+// 		return 'you lost the game';
+// 	}
+// 	// return `${playerScore, computerScore}` 
+// } 
+
+// console.log(game());
